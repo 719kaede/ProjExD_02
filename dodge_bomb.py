@@ -11,8 +11,30 @@ def main():
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
     kk_img = pg.image.load("ex02/fig/3.png")
-    kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
-    kk_rct = kk_img.get_rect()
+    kk_img1 = pg.transform.rotozoom(kk_img, 0, 2.0)#(-5, 0)
+    kk_img2 = pg.transform.rotozoom(kk_img, 315, 2.0)#(-5, -5)
+    kk_img3_k = pg.transform.flip(kk_img, True, False)
+    kk_img3 = pg.transform.rotozoom(kk_img3_k, 90, 2.0)#(0, -5)
+    kk_img4_k = pg.transform.flip(kk_img, True, False)#(5, -5)
+    kk_img4 = pg.transform.rotozoom(kk_img4_k, 45, 2.0)
+    kk_img5_k = pg.transform.flip(kk_img, True, False)
+    kk_img5 = pg.transform.rotozoom(kk_img5_k, 0, 2.0)#(5, 0)
+    kk_img6_k = pg.transform.flip(kk_img, True, False)
+    kk_img6 = pg.transform.rotozoom(kk_img6_k, 315, 2.0)#(5, 5)
+    kk_img7_k = pg.transform.flip(kk_img, True, False)
+    kk_img7 = pg.transform.rotozoom(kk_img7_k, 270, 2.0)#(0, 5)
+    kk_img8 = pg.transform.rotozoom(kk_img, 45, 2.0)#(-5, 5)
+    kk_img_d = {(0, 0):kk_img1, 
+                (-5, 0):kk_img1, 
+                (-5, -5):kk_img2, 
+                (0, -5):kk_img3, 
+                (5, -5):kk_img4, 
+                (5, 0):kk_img5, 
+                (5, 5):kk_img6, 
+                (0, 5):kk_img7, 
+                (-5, 5):kk_img8}
+
+    kk_rct = kk_img1.get_rect()
     kk_rct.center = 900, 400
     bom_img = pg.Surface((20, 20))
     bom_img.set_colorkey((0, 0, 0))
@@ -49,10 +71,12 @@ def main():
             if key_lst[k]:
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
+                
+        kk_utusu = kk_img_d[tuple(sum_mv)]
         kk_rct.move_ip(sum_mv)
+        print(sum_mv)
         if tobidasi(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
-        print(sum_mv)
 
         bd_rct.move_ip(vx, vy)
 
@@ -63,7 +87,7 @@ def main():
 
 
         screen.blit(bg_img, [0, 0])
-        screen.blit(kk_img, kk_rct)
+        screen.blit(kk_utusu, kk_rct)
         screen.blit(bom_img, bd_rct)
         pg.display.update()
         tmr += 1
