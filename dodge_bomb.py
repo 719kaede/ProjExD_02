@@ -44,6 +44,9 @@ def main():
     bd_rct = bom_img.get_rect()
     bd_rct.center = x, y
     vx, vy = +5, +5
+    accs = [a for a in range(1, 11)]
+    
+    
     delta = {pg.K_UP:(0, -5), pg.K_DOWN:(0, +5), pg.K_LEFT:(-5, 0), pg.K_RIGHT:(+5, 0),}
     clock = pg.time.Clock()
     tmr = 0
@@ -71,23 +74,23 @@ def main():
             if key_lst[k]:
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
-                
-        kk_utusu = kk_img_d[tuple(sum_mv)]
         kk_rct.move_ip(sum_mv)
-        print(sum_mv)
         if tobidasi(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
 
-        bd_rct.move_ip(vx, vy)
+        avx, avy = vx*accs[min(tmr//500, 9)], vy*accs[min(tmr//500, 9)]
+        bd_rct.move_ip(avx, avy)
 
         if tobidasi(bd_rct) == (False, True):
+            print("tobi")
             vx *= -1
         elif tobidasi(bd_rct) == (True, False):
+            print("tobi")
             vy *=-1
 
 
         screen.blit(bg_img, [0, 0])
-        screen.blit(kk_utusu, kk_rct)
+        screen.blit(kk_img_d[tuple(sum_mv)], kk_rct)
         screen.blit(bom_img, bd_rct)
         pg.display.update()
         tmr += 1
