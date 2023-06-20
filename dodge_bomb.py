@@ -35,9 +35,10 @@ def main():
                 (-5, 5):kk_img8}
     kk_img_owari = pg.image.load("ex02/fig/8.png")
     kk_img_owari = pg.transform.rotozoom(kk_img_owari, 0, 2.0)
-
     kk_rct = kk_img1.get_rect()
     kk_rct.center = 900, 400
+
+    #ここから爆弾について
     bom_img = pg.Surface((20, 20))
     bom_img.set_colorkey((0, 0, 0))
     pg.draw.circle(bom_img, (255, 0, 0), (10, 10), 10)
@@ -47,11 +48,15 @@ def main():
     bd_rct.center = x, y
     vx, vy = +5, +5
     accs = [a for a in range(1, 11)]
+
     owari = True
-    sa_ve = [0, 0]
+    #sa_ve = [0, 0]
     
     
-    delta = {pg.K_UP:(0, -5), pg.K_DOWN:(0, +5), pg.K_LEFT:(-5, 0), pg.K_RIGHT:(+5, 0),}
+    delta = {pg.K_UP:(0, -5), 
+             pg.K_DOWN:(0, +5), 
+             pg.K_LEFT:(-5, 0), 
+             pg.K_RIGHT:(+5, 0),}
     clock = pg.time.Clock()
     tmr = 0
 
@@ -63,9 +68,10 @@ def main():
             tate = False
         return yoko, tate
     
-    def seikika(a, b):
-        a/(a+b)
-        b/(a+b)
+    #def seikika(a, b):
+    #    sqrt(a**2+b**2)
+    #    a/(a+b)
+    #    b/(a+b)
     
     while True:
         for event in pg.event.get():
@@ -85,7 +91,7 @@ def main():
             if tobidasi(kk_rct) != (True, True):
                 kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
 
-            sa_vx, sa_vy = seikika(kk_rct[0]-bd_rct[0], kk_rct[1]-bd_rct[1])
+            #sa_vx, sa_vy = seikika(kk_rct[0]-bd_rct[0], kk_rct[1]-bd_rct[1])
             avx, avy = vx*accs[min(tmr//500, 9)], vy*accs[min(tmr//500, 9)]
             bd_rct.move_ip(avx, avy)
 
