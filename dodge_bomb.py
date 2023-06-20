@@ -48,6 +48,7 @@ def main():
     vx, vy = +5, +5
     accs = [a for a in range(1, 11)]
     owari = True
+    sa_ve = [0, 0]
     
     
     delta = {pg.K_UP:(0, -5), pg.K_DOWN:(0, +5), pg.K_LEFT:(-5, 0), pg.K_RIGHT:(+5, 0),}
@@ -61,6 +62,10 @@ def main():
         if rect.top < 0 or HEIGHT < rect.bottom:
             tate = False
         return yoko, tate
+    
+    def seikika(a, b):
+        a/(a+b)
+        b/(a+b)
     
     while True:
         for event in pg.event.get():
@@ -80,6 +85,7 @@ def main():
             if tobidasi(kk_rct) != (True, True):
                 kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
 
+            sa_vx, sa_vy = seikika(kk_rct[0]-bd_rct[0], kk_rct[1]-bd_rct[1])
             avx, avy = vx*accs[min(tmr//500, 9)], vy*accs[min(tmr//500, 9)]
             bd_rct.move_ip(avx, avy)
 
