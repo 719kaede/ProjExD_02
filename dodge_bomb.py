@@ -47,6 +47,7 @@ def main():
     bd_rct.center = x, y
     vx, vy = +5, +5
     accs = [a for a in range(1, 11)]
+    owari = True
     
     
     delta = {pg.K_UP:(0, -5), pg.K_DOWN:(0, +5), pg.K_LEFT:(-5, 0), pg.K_RIGHT:(+5, 0),}
@@ -65,41 +66,47 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
-            
-        key_lst = pg.key.get_pressed()#これでキーの情報取得
-        #キー:Ture、False　の辞書っぽいものができていて、入力されると該当のアイテムがTrueになる
+        
+        if owari:
+            key_lst = pg.key.get_pressed()#これでキーの情報取得
+            #キー:Ture、False　の辞書っぽいものができていて、入力されると該当のアイテムがTrueになる
 
-        sum_mv = [0, 0]
-        for k, mv in delta.items():
-            if key_lst[k]:
-                sum_mv[0] += mv[0]
-                sum_mv[1] += mv[1]
-        kk_rct.move_ip(sum_mv)
-        if tobidasi(kk_rct) != (True, True):
-            kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
+            sum_mv = [0, 0]
+            for k, mv in delta.items():
+                if key_lst[k]:
+                    sum_mv[0] += mv[0]
+                    sum_mv[1] += mv[1]
+            kk_rct.move_ip(sum_mv)
+            if tobidasi(kk_rct) != (True, True):
+                kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
 
-        avx, avy = vx*accs[min(tmr//500, 9)], vy*accs[min(tmr//500, 9)]
-        bd_rct.move_ip(avx, avy)
+            avx, avy = vx*accs[min(tmr//500, 9)], vy*accs[min(tmr//500, 9)]
+            bd_rct.move_ip(avx, avy)
 
-        if tobidasi(bd_rct) == (False, True):
-            print("tobi")
-            vx *= -1
-        elif tobidasi(bd_rct) == (True, False):
-            print("tobi")
-            vy *=-1
+            if tobidasi(bd_rct) == (False, True):
+                print("tobi")
+                vx *= -1
+            elif tobidasi(bd_rct) == (True, False):
+                print("tobi")
+                vy *=-1
 
-
-        screen.blit(bg_img, [0, 0])
-        screen.blit(kk_img_d[tuple(sum_mv)], kk_rct)
-        screen.blit(bom_img, bd_rct)
+            tmr_o = tmr
+            screen.blit(bg_img, [0, 0])
+            screen.blit(kk_img_d[tuple(sum_mv)], kk_rct)
+            screen.blit(bom_img, bd_rct)
+            pg.display.update()
 
         if kk_rct.colliderect(bd_rct):
             screen.blit(bg_img, [0, 0])
             screen.blit(kk_img_owari, kk_rct)
             screen.blit(bom_img, bd_rct)
             pg.display.update()
+            owari = False
+        
+        print(tmr_o-tmr)
+        if tmr_o-tmr <= -150:
             return
-        pg.display.update()
+        
         tmr += 1
         clock.tick(50)
 
