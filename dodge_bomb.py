@@ -3,7 +3,7 @@ import sys
 import pygame as pg
 
 
-WIDTH, HEIGHT = 1600, 900
+WIDTH, HEIGHT = 1000, 600
 
 
 def main():
@@ -13,6 +13,7 @@ def main():
     kk_img = pg.image.load("ex02/fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
     kk_rct = kk_img.get_rect()
+    kk_rct.center = 900, 400
     bom_img = pg.Surface((20, 20))
     bom_img.set_colorkey((0, 0, 0))
     pg.draw.circle(bom_img, (255, 0, 0), (10, 10), 10)
@@ -25,7 +26,7 @@ def main():
     clock = pg.time.Clock()
     tmr = 0
 
-    def bom_bound(rect):
+    def tobidasi(rect):
         yoko, tate = True, True
         if rect.left < 0 or WIDTH < rect.right:
             yoko = False
@@ -38,14 +39,27 @@ def main():
             if event.type == pg.QUIT: 
                 return
             
+        if kk_rct.colliderect(bd_rct):
+            return
         key_lst = pg.key.get_pressed()#これでキーの情報取得
         #キー:Ture、False　の辞書っぽいものができていて、入力されると該当のアイテムがTrueになる
 
+        sum_mv = [0, 0]
         for k, mv in delta.items():
             if key_lst[k]:
-                print(key_lst[k])
-                kk_rct.move_ip((mv))
+                sum_mv[0] += mv[0]
+                sum_mv[1] += mv[1]
+        kk_rct.move_ip(sum_mv)
+        if tobidasi(kk_rct) != (True, True):
+            kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
+        print(sum_mv)
+
         bd_rct.move_ip(vx, vy)
+
+        if tobidasi(bd_rct) == (False, True):
+            vx *= -1
+        elif tobidasi(bd_rct) == (True, False):
+            vy *=-1
 
 
         screen.blit(bg_img, [0, 0])
