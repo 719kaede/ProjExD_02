@@ -33,6 +33,8 @@ def main():
                 (5, 5):kk_img6, 
                 (0, 5):kk_img7, 
                 (-5, 5):kk_img8}
+    kk_img_owari = pg.image.load("ex02/fig/8.png")
+    kk_img_owari = pg.transform.rotozoom(kk_img_owari, 0, 2.0)
 
     kk_rct = kk_img1.get_rect()
     kk_rct.center = 900, 400
@@ -64,8 +66,6 @@ def main():
             if event.type == pg.QUIT: 
                 return
             
-        if kk_rct.colliderect(bd_rct):
-            return
         key_lst = pg.key.get_pressed()#これでキーの情報取得
         #キー:Ture、False　の辞書っぽいものができていて、入力されると該当のアイテムがTrueになる
 
@@ -92,6 +92,13 @@ def main():
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img_d[tuple(sum_mv)], kk_rct)
         screen.blit(bom_img, bd_rct)
+
+        if kk_rct.colliderect(bd_rct):
+            screen.blit(bg_img, [0, 0])
+            screen.blit(kk_img_owari, kk_rct)
+            screen.blit(bom_img, bd_rct)
+            pg.display.update()
+            return
         pg.display.update()
         tmr += 1
         clock.tick(50)
